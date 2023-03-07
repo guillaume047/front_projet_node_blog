@@ -1,8 +1,7 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import {FunctionComponent} from "react";
+import {FunctionComponent, useEffect} from "react";
 import {IUser} from "@/interfaces/IUser";
 import {addOneUser} from "@/api/users";
-import { useFlashMessage } from "@/components/useFlashMessage";
+import {useFlashMessage} from "@/components/useFlashMessage";
 
 interface IProps {
     user?: IUser;
@@ -11,7 +10,7 @@ interface IProps {
 const UserAddForm: FunctionComponent<IProps> = ({user}) => {
     const flashMessage = useFlashMessage();
 
-    
+
     const addUser = async (e: any) => {
         console.log('e : ', e)
         e.preventDefault()
@@ -30,34 +29,34 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
             photo: e.target.photo.value,
             isAdmin: e.target.isAdmin.value,
         }
-        try{
-        addOneUser(data).then((res) => {
-            //flash message
-            console.log('res : ', res);
+        try {
+            addOneUser(data).then((res) => {
+                //flash message
+                console.log('res : ', res);
 
-            if(res.status === 200){
-            flashMessage.show('Formulaire soumis avec succès!',"#33FF99");
-            }else {
-                flashMessage.show(`${res.response.data.message}`,"#F08080");
-            }
-        })
-        }catch(err){
-     
-            flashMessage.show(`${err}`,"red");
+                if (res.status === 200) {
+                    flashMessage.show('Formulaire soumis avec succès!', "#33FF99");
+                } else {
+                    flashMessage.show(`${res.response.data.message}`, "#F08080");
+                }
+            })
+        } catch (err) {
+
+            flashMessage.show(`${err}`, "red");
         }
     }
 
     useEffect(() => {
-        let timeoutId: number;
+        let timeoutId: any;
         if (flashMessage.isVisible) {
-          timeoutId = setTimeout(() => {
-            flashMessage.hide();
-          }, 5000);
+            timeoutId = setTimeout(() => {
+                flashMessage.hide();
+            }, 5000);
         }
         return () => {
-          clearTimeout(timeoutId);
+            clearTimeout(timeoutId);
         };
-      }, [flashMessage.isVisible, flashMessage.hide]);
+    }, [flashMessage.isVisible, flashMessage.hide]);
 
     return (
         <div className="flex-row w-auto items-center justify-center px-6 py-8 mx-auto md:h-full lg:py-0">
@@ -163,7 +162,10 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
                         </button>
                     </div>
                     {flashMessage.isVisible && (
-                        <div style={flashMessage.isVisible ? {...styles.flashMessage,backgroundColor:flashMessage.color} : styles.hide}>
+                        <div style={flashMessage.isVisible ? {
+                            ...styles.flashMessage,
+                            backgroundColor: flashMessage.color
+                        } : styles.hide}>
                             <p>{flashMessage.message}</p>
                         </div>
                     )}
@@ -175,19 +177,19 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
 
 const styles = {
     flashMessage: {
-      position: "fixed",
-      top: "80%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "lightgreen",
-      padding: "20px",
-      borderRadius: "5px",
-      boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.2)",
-      textAlign: "center"
+        position: "fixed",
+        top: "80%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "lightgreen",
+        padding: "20px",
+        borderRadius: "5px",
+        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.2)",
+        textAlign: "center"
     },
     hide: {
-      display: "none"
+        display: "none"
     }
-  };
-  
+};
+
 export default UserAddForm;

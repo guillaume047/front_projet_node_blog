@@ -124,7 +124,7 @@ const UserList = () => {
                         onChange={e => setSearchCategoryUsers(e.target.value)}
                     >
                         <option selected={true}>Toutes les catégories</option>
-                        {Array.from(categories).map((category, index) => {
+                        {Array.from(categories).map((category: any, index) => {
                             return <option key={index}>{category}</option>
                         })}
                     </select>

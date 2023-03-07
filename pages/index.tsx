@@ -1,32 +1,63 @@
 import BaseLayout from "@/components/BaseLayout";
-import UserCard from "@/components/UserCard";
 import {useQuery} from "react-query";
 import {getRandomUser} from "@/api/users";
+import PostCard from "@/components/PostCard";
+import {IPost} from "@/interfaces/IPost";
+import * as process from "process";
 
 const Dashboard = () => {
-    const {data, isLoading, refetch} = useQuery(
+    let {data, isLoading, refetch} = useQuery(
         ['randomUser'],
         () => getRandomUser(),
     )
+
+    data = [
+        {
+            _id: "1",
+            title: "Hello",
+            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
+            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
+            likeCount: 24,
+            created_at: "2021-01-18T15:00:00.000Z",
+        },
+        {
+            _id: "2",
+            title: "Hello",
+            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
+            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
+            likeCount: 24,
+            created_at: "2021-01-18T15:00:00.000Z",
+        },
+        {
+            _id: "3",
+            title: "Hello",
+            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
+            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
+            likeCount: 24,
+            created_at: "2021-01-18T15:00:00.000Z",
+        },
+        {
+            _id: "4",
+            title: "Hello",
+            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
+            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
+            likeCount: 24,
+            created_at: "2021-01-18T15:00:00.000Z",
+        },
+    ]
 
     return (!isLoading &&
         <>
             <BaseLayout title={"Dashboard"}>
                 <div
                     className="flex flex-col text-black items-center justify-center px-6 mx-auto md:h-full lg:py-0">
-                    <div className={"my-5 text-3xl"}>Bienvenue sur l'Intranet !</div>
-                    <div className={"my-5"}>La plateforme qui vous permet de retrouver tout vo collaborateurs !</div>
-                    <div
-                        className="flex flex-col text-xl items-center justify-center w-full rounded-lg md:mt-0 sm:max-w-md xl:p-0">
-                        Avez-vous dit bonjour à :
-                    </div>
-                    <UserCard user={data}/>
+                    <div className={"my-5 text-3xl"}>Bienvenue sur le {process.env.NEXT_PUBLIC_APP_NAME} !</div>
+                    <div className={"my-5"}>Voici les 6 derniers articles crées :</div>
 
-                    <div className="flex-1 space-x-2 justify-center">
-                        <button type="button" onClick={() => refetch()}
-                                className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                            Dire Bonjour au hasard
-                        </button>
+                    <div className="grid base:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full mt-5 gap-5 lg:px-20">
+                        {
+                            data && data.map((post: IPost) => <PostCard key={post._id} initialPost={post}/>)
+                        }
                     </div>
                 </div>
             </BaseLayout>
