@@ -12,7 +12,6 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
 
 
     const addUser = async (e: any) => {
-        console.log('e : ', e)
         e.preventDefault()
 
         const data = {
@@ -31,9 +30,6 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
         }
         try {
             addOneUser(data).then((res) => {
-                //flash message
-                console.log('res : ', res);
-
                 if (res.status === 200) {
                     flashMessage.show('Formulaire soumis avec succès!', "#33FF99");
                 } else {
@@ -41,7 +37,6 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
                 }
             })
         } catch (err) {
-
             flashMessage.show(`${err}`, "red");
         }
     }

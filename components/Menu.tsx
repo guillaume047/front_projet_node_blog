@@ -20,7 +20,16 @@ const Menu = () => {
                             </div>
                             <div className="flex flex-end items-center space-x-1">
                                 <a href="/users"
-                                   className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">Liste
+                                   className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
+                                    Tous les articles
+                                </a>
+                                {user && user.isAdmin && <a href="/users/add"
+                                                            className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">Ajouter</a>}
+                            </div>
+                            <div className="flex flex-end items-center space-x-1">
+                                <a href="/users"
+                                   className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
+                                    Mes articles
                                 </a>
                                 {user && user.isAdmin && <a href="/users/add"
                                                             className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">Ajouter</a>}

@@ -1,6 +1,7 @@
 import {FunctionComponent, useState} from "react";
 import {IPost} from "@/interfaces/IPost";
 import dayjs from "dayjs";
+import ModalAddComment from "@/components/ModalAddComment";
 
 interface IProps {
     initialPost: IPost
@@ -8,13 +9,14 @@ interface IProps {
 
 const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
     const [post, setPost] = useState<IPost>(initialPost)
+
     const handleClick = () => {
         setPost({...post, likeCount: post.likeCount + 1})
     }
 
     return (
         <div
-            className="flex flex-col justify-start md:h-fit bg-amber-200 p-5 gap-3 w-full rounded-2xl border-2 border-blue-200 hover:border-blue-400">
+            className="flex flex-col justify-start bg-amber-200 p-5 gap-3 w-full h-80 rounded-2xl border-2 border-blue-200 hover:border-blue-400">
             <div className="flex flex-row text-2xl font-bold">
                 {post.title}
             </div>
@@ -22,11 +24,11 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
             {post.image && (
                 <div className="flex flex-col gap-1">
                     <div className={"text-sm"}>{dayjs(post.created_at).format("ddd DD MMM").toString()}</div>
-                    <img src={post.image}/>
+                    <img src={post.image} className={"w-full h-36"}/>
                 </div>
             )}
 
-            {post.likeCount && (
+            {post.likeCount >= 0 && (
                 <div onClick={handleClick}
                      className="flex flex-row justify-start items-center gap-1 hover:text-blue-600 w-fit cursor-pointer select-none">
                     <span>{post.likeCount}</span>
@@ -38,6 +40,7 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
                 </div>
             )}
 
+            <ModalAddComment post={post}/>
         </div>
     )
 }

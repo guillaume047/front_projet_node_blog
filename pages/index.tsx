@@ -1,50 +1,18 @@
 import BaseLayout from "@/components/BaseLayout";
 import {useQuery} from "react-query";
-import {getRandomUser} from "@/api/users";
 import PostCard from "@/components/PostCard";
 import {IPost} from "@/interfaces/IPost";
 import * as process from "process";
+import ModalAddPost from "@/components/ModalAddPost";
+import {getSixPosts} from "@/api/posts";
 
 const Dashboard = () => {
     let {data, isLoading, refetch} = useQuery(
-        ['randomUser'],
-        () => getRandomUser(),
+        ['getSixPosts'],
+        () => getSixPosts(),
     )
 
-    data = [
-        {
-            _id: "1",
-            title: "Hello",
-            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
-            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
-            likeCount: 24,
-            created_at: "2021-01-18T15:00:00.000Z",
-        },
-        {
-            _id: "2",
-            title: "Hello",
-            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
-            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
-            likeCount: 24,
-            created_at: "2021-01-18T15:00:00.000Z",
-        },
-        {
-            _id: "3",
-            title: "Hello",
-            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
-            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
-            likeCount: 24,
-            created_at: "2021-01-18T15:00:00.000Z",
-        },
-        {
-            _id: "4",
-            title: "Hello",
-            image: "https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=1920",
-            content: "Loreum ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quod.",
-            likeCount: 24,
-            created_at: "2021-01-18T15:00:00.000Z",
-        },
-    ]
+    console.log(data)
 
     return (!isLoading &&
         <>
@@ -58,6 +26,11 @@ const Dashboard = () => {
                         {
                             data && data.map((post: IPost) => <PostCard key={post._id} initialPost={post}/>)
                         }
+                    </div>
+
+                    <div className={"flex flex-col align-center mt-6"}>Peut être voulez vous ajouter un
+                        article
+                        ? <ModalAddPost/>
                     </div>
                 </div>
             </BaseLayout>
