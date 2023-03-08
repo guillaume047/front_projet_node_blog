@@ -33,7 +33,7 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
 
     return (
         <div
-            className="flex flex-col justify-start bg-amber-200 p-5 gap-3 w-full h-80 rounded-2xl border-2 border-blue-200 hover:border-blue-400">
+            className="flex flex-col justify-start bg-amber-200 p-5 gap-3 w-full h-70 rounded-2xl border-2 border-blue-200 hover:border-blue-400">
             <div className="flex flex-row text-2xl font-bold relative">
                 {post.title}
 
@@ -67,19 +67,30 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
                 </div>
             )}
 
-            {post.likeCount >= 0 && (
-                <div onClick={handleClick}
-                     className="flex flex-row justify-start items-center gap-1 hover:text-blue-600 w-fit cursor-pointer select-none">
-                    <span>{post.likeCount}</span>
+            <div className="flex flex-row gap-5">
+                {post.likeCount >= 0 && (
+                    <div onClick={handleClick}
+                         className="flex flex-row justify-start items-center gap-1 hover:text-blue-600 w-fit cursor-pointer select-none">
+                        <span>{post.likeCount}</span>
 
-                    <svg viewBox="0 0 47 47" className={"fill-current h-5 w-5"}>
+                        <svg viewBox="0 0 47 47" className={"fill-current h-5 w-5"}>
+                            <path
+                                d="m44.732 23.195-4.528-.001a2.269 2.269 0 0 0-2.267 2.264v19.164a2.267 2.267 0 0 0 2.267 2.266h4.528A2.267 2.267 0 0 0 47 44.622v-19.16a2.268 2.268 0 0 0-2.268-2.267zm-1.805 21.326a1.858 1.858 0 1 1-2.629-2.628 1.86 1.86 0 0 1 2.629 2.628zM29.078 9.795c.197-2.889.969-4.351 1.238-7.204C30.47.965 28.767.112 25.669.112c-3.098 0-4.298 2.773-4.648 3.718-.774 2.092 0 8.985 0 12.394 0 2.686-4.805 4.16-10.303 4.169C3.155 20.408 0 18.6 0 23.345c0 1.642 1.013 2.973 2.265 2.972-1.252 0-2.266 1.334-2.265 2.974 0 1.64 1.013 2.974 2.265 2.971C1.013 32.264.001 33.595 0 35.233c0 1.645 1.015 2.973 2.265 2.975-1.25-.002-2.265 1.33-2.264 2.975 0 1.643 1.013 2.972 2.264 2.972 0 0 3.219.003 15.429.003h16.671c.625 0 1.131-.507 1.132-1.134V25.82a1.125 1.125 0 0 0-.129-.524c-.001 0-6.833-7.523-6.29-15.501z"/>
+                        </svg>
+                    </div>
+                )}
+
+                <div
+                    className="flex flex-row justify-start items-center gap-1 hover:text-blue-600 w-fit cursor-pointer select-none">
+                    <svg viewBox="0 0 121.58 122.88" className={"fill-current h-5 w-5"}>
                         <path
-                            d="m44.732 23.195-4.528-.001a2.269 2.269 0 0 0-2.267 2.264v19.164a2.267 2.267 0 0 0 2.267 2.266h4.528A2.267 2.267 0 0 0 47 44.622v-19.16a2.268 2.268 0 0 0-2.268-2.267zm-1.805 21.326a1.858 1.858 0 1 1-2.629-2.628 1.86 1.86 0 0 1 2.629 2.628zM29.078 9.795c.197-2.889.969-4.351 1.238-7.204C30.47.965 28.767.112 25.669.112c-3.098 0-4.298 2.773-4.648 3.718-.774 2.092 0 8.985 0 12.394 0 2.686-4.805 4.16-10.303 4.169C3.155 20.408 0 18.6 0 23.345c0 1.642 1.013 2.973 2.265 2.972-1.252 0-2.266 1.334-2.265 2.974 0 1.64 1.013 2.974 2.265 2.971C1.013 32.264.001 33.595 0 35.233c0 1.645 1.015 2.973 2.265 2.975-1.25-.002-2.265 1.33-2.264 2.975 0 1.643 1.013 2.972 2.264 2.972 0 0 3.219.003 15.429.003h16.671c.625 0 1.131-.507 1.132-1.134V25.82a1.125 1.125 0 0 0-.129-.524c-.001 0-6.833-7.523-6.29-15.501z"/>
+                            d="M25.8,111.27,44.08,94.69a3.46,3.46,0,0,1,2.41-1h66.18a2,2,0,0,0,2-1.95V8.9a2,2,0,0,0-2-1.95H8.9A1.95,1.95,0,0,0,7,8.9V91.76a1.95,1.95,0,0,0,2,1.95H22.33a3.48,3.48,0,0,1,3.47,3.48v14.08Zm1.17-45a3.48,3.48,0,0,0,0,7H68a3.48,3.48,0,0,0,0-7Zm0-39.86a3.48,3.48,0,0,0,0,7H94.69a3.48,3.48,0,1,0,0-6.95Zm0,19.93a3.48,3.48,0,0,0,0,6.95H87.66a3.48,3.48,0,0,0,0-6.95Zm20.9,54.32-23,21.07a3.48,3.48,0,0,1-6.06-2.32V100.66H8.9A8.91,8.91,0,0,1,0,91.76V8.9A8.91,8.91,0,0,1,8.9,0H112.67a8.93,8.93,0,0,1,8.91,8.9V91.76a8.93,8.93,0,0,1-8.91,8.9Z"/>
                     </svg>
                 </div>
-            )}
+                <ModalAddComment post={post}/>
+            </div>
 
-            <ModalAddComment post={post}/>
+
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React, {FunctionComponent} from "react";
 import {addComment} from "@/api/comment";
 import {IComment} from "@/interfaces/IComment";
 import {IPost} from "@/interfaces/IPost";
+import {useFlashMessage} from "@/components/useFlashMessage";
 
 interface IProps {
     post: IPost
@@ -9,7 +10,7 @@ interface IProps {
 
 const ModalAddComment: FunctionComponent<IProps> = ({post}) => {
     const [showModal, setShowModal] = React.useState(false);
-
+    const flashMessage = useFlashMessage();
     const handleSubmit = (e: any) => {
         e.preventDefault()
 
@@ -17,8 +18,14 @@ const ModalAddComment: FunctionComponent<IProps> = ({post}) => {
             text: e.target.text.value,
             post_id: post._id as string,
         }
-
-        addComment(data)
+        addComment(data).then(() => {
+            setShowModal(false)
+            flashMessage.show("Votre commentaire a bien été ajouté", "green");
+        })
+            .catch((err) => {
+                console.log('err : ', err)
+                flashMessage.show(`${err.response.data.message}`, "red");
+            })
     }
 
     return (

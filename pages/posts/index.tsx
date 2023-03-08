@@ -4,6 +4,7 @@ import * as process from "process";
 import axios from "axios";
 import BaseLayout from "@/components/BaseLayout";
 import PostCard from "@/components/PostCard";
+import ModalAddPost from "@/components/ModalAddPost";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -95,7 +96,7 @@ const Posts = () => {
     const [name, setName] = useState("");
     return (
         <BaseLayout title={"Users"}>
-            <div className="flex flex-col text-black items-center px-6 py-8 mx-auto md:h-full lg:py-0">
+            <div className="flex flex-col text-black items-center px-6 py-8 mx-auto w-full md:h-full lg:py-0">
                 <h1 className="text-3xl font-medium">Articles</h1>
                 <div className="flex items-center px-4 py-3 bg-white border-b border-gray-200 rounded">
                     <input
@@ -125,8 +126,10 @@ const Posts = () => {
                     </select>
                 </div>
 
-                <div className="flex flex-col items-center">
-                    <div className="flex flex-wrap justify-center">
+                <ModalAddPost/>
+
+                <div className="flex flex-col items-center w-full">
+                    <div className="flex flex-wrap justify-center w-full">
                         <div className="grid base:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full mt-5 gap-5 lg:px-20">
                             {
                                 posts && posts.map((post: IPost) => <PostCard key={post._id}

@@ -3,7 +3,7 @@ import {IComment} from "@/interfaces/IComment";
 
 export function addComment(data: IComment) {
     return axios.post(
-        process.env.NEXT_PUBLIC_API_URL + '/comments',
+        process.env.NEXT_PUBLIC_API_URL + '/comments/add',
         data,
         {
             headers: {
