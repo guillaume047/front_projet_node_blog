@@ -18,23 +18,28 @@ const Menu = () => {
                                         className={'font-semibold text-gray-500 text-lg'}>{process.env.NEXT_PUBLIC_APP_NAME}</span>
                                 </a>
                             </div>
+
                             <div className="flex flex-end items-center space-x-1">
-                                <a href="/users"
+                                <a href="/posts"
                                    className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
                                     Tous les articles
                                 </a>
-                                {user && user.isAdmin && <a href="/users/add"
-                                                            className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">Ajouter</a>}
                             </div>
+                        </div>
+
+                        {user && user.isAdmin === true && (
                             <div className="flex flex-end items-center space-x-1">
                                 <a href="/users"
                                    className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
-                                    Mes articles
+                                    Users
                                 </a>
                                 {user && user.isAdmin && <a href="/users/add"
-                                                            className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">Ajouter</a>}
+                                                            className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
+                                    Ajouter un User
+                                </a>}
                             </div>
-                        </div>
+                        )}
+
                         <div className="flex items-center space-x-3 ">
                             <a href={"/users/" + user?._id}
                                className="py-2 px-2 font-medium text-gray-500">

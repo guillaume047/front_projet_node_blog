@@ -12,7 +12,7 @@ export function getRandomUser() {
 }
 
 export function addOneUser(user: IUser) {
-   return axios.post(
+    return axios.post(
         process.env.NEXT_PUBLIC_API_URL + '/users',
         user,
         {
@@ -22,9 +22,8 @@ export function addOneUser(user: IUser) {
             }
         }
     ).then((res) => res)
-    .catch((err) => 
-            err
-        )
+        .catch(err => console.log(err));
+
 }
 
 export function updateOneUser(user: IUser) {

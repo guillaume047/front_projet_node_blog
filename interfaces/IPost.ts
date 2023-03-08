@@ -5,5 +5,5 @@ export interface IPost {
     image: string;
     likeCount: number;
     created_at?: string;
-
+    categories: string[];
 }

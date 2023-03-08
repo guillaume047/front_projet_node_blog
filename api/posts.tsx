@@ -13,7 +13,7 @@ export function addPost(data: IPost) {
         }
     ).then((res) => res.data)
         .catch((err) =>
-            err
+            console.log('err', err)
         )
 }
 
@@ -28,6 +28,21 @@ export function getSixPosts() {
         }
     ).then((res) => res.data)
         .catch((err) =>
-            err
+            console.log('err', err)
+        )
+}
+
+export function deleteOnePost(postID: string) {
+    return axios.delete(
+        process.env.NEXT_PUBLIC_API_URL + '/posts/' + postID,
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res.data)
+        .catch((err) =>
+            console.log('err', err)
         )
 }

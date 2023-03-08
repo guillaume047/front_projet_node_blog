@@ -12,7 +12,5 @@ export function addComment(data: IComment) {
             }
         }
     ).then((res) => res)
-        .catch((err) =>
-            err
-        )
+        .catch(err => console.log(err));
 }
