@@ -17,6 +17,22 @@ export function addPost(data: IPost) {
         )
 }
 
+export function updatePost(data: IPost) {
+    return axios.post(
+        process.env.NEXT_PUBLIC_API_URL + '/updatePost/' + data._id,
+        data,
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res.data)
+        .catch((err) =>
+            console.log('err', err)
+        )
+}
+
 export function getSixPosts() {
     return axios.get(
         process.env.NEXT_PUBLIC_API_URL + '/posts-6',

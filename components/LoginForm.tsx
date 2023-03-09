@@ -26,12 +26,11 @@ const LoginForm = () => {
                 // Set the access token in the local storage
                 setAuthUser(res.user)
                 localStorage.setItem('ACCESS_TOKEN', res.token)
+                router.push('/')
             })
-            .then(() => router.push('/'))
             .catch((err) => {
                 console.log('err : ', err)
                 flashMessage.show(`${err.response.data.message}`, "red");
-
             })
     }
 

@@ -1,26 +1,30 @@
 import React, {FunctionComponent} from "react";
 import {IPost} from "@/interfaces/IPost";
-import {addPost} from "@/api/posts";
+import {updatePost} from "@/api/posts";
+import {useRecoilValue} from "recoil";
+import {authUser} from "@/recoil/user";
 import {useRouter} from "next/router";
 
 interface IProps {
+    post: IPost
 }
 
-const ModalAddComment: FunctionComponent<IProps> = ({}) => {
+const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
     const [showModal, setShowModal] = React.useState(false);
-    const router = useRouter();
+    const user = useRecoilValue(authUser)
+    const router = useRouter()
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
 
         const data: IPost = {
+            _id: post._id,
             title: e.target.title.value,
             content: e.target.text.value,
             image: e.target.image.value,
-            likeCount: 0,
         }
 
-        addPost(data).then(() => {
+        updatePost(data).then(() => {
             setShowModal(false)
             router.reload()
         })
@@ -28,11 +32,22 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
 
     return (
         <>
-            <a onClick={() => setShowModal(true)}
-               className="py-2 px-2 font-medium text-white w-fit mx-auto cursor-pointer bg-primary-600 rounded hover:bg-primary-400 transition duration-300">
-                Ajouter
-                un article
-            </a>
+            {(user && user.isAdmin === true || user._id === post.owner_id) && (
+                <div className={"absolute top-0 right-6"} onClick={() => setShowModal(true)}>
+                    <svg viewBox="0 0 100 100"
+                         className={"fill-blue-600 hover:fill-blue-400 hover:cursor-pointer h-5 w-5"}>
+                        <path
+                            d="M95.3,11.4l-6.5-6.5c-2.4-2.4-6.3-2.4-8.7,0l-3.8,3.8h0L73,12L68.1,17l-3.6,3.6h0L16.6,68.4h0l-6.1,6.1L2.9,96.9l22.7-7.2  l2.7-2.7h0l67-67C97.7,17.6,97.7,13.7,95.3,11.4z M4.7,95.1l2.6-7.6l5.1,5.1L4.7,95.1z M25,88.7l-11.5,3.7l0.1-0.1l-5.9-5.9  l3.8-11.2l0.8-0.8l2.8,0.3l-0.5,3.6l3.4-0.5l-0.6,4.2l4.2-0.6l-0.4,2.9l2.9-0.4l-0.6,4l3.1-0.5L25,88.7z M31.9,81.8l-4.1,4.1  l-3.1,0.5l0.6-4l-2.9,0.4l0.4-2.9l-4.2,0.6l0.6-4.2l-3.4,0.5l0.5-3.3l-3-0.3l4.1-4.1l47.9-47.9l13.5,13.5L31.9,81.8z M79.6,34.1  L66.1,20.6l2.8-2.8l13.5,13.5L79.6,34.1z M83.2,30.5L69.7,17l2.9-2.9l0.4-0.4l13.5,13.5L83.2,30.5z M87.3,26.4L73.8,12.8l2.6-2.6  l13.5,13.5L87.3,26.4z M94.5,19.2L90.7,23L77.2,9.5L81,5.7c1.9-1.9,5.1-1.9,7.1,0l6.5,6.5C96.4,14.1,96.4,17.3,94.5,19.2z">
+                        </path>
+                        <rect x="18.2" y="54.9" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 125.1507 59.1783)"
+                              width="64.3"
+                              height="1.1"></rect>
+                        <rect x="12.1" y="48.9" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 110.5581 53.1338)"
+                              width="64.3"
+                              height="1.1"></rect>
+                    </svg>
+                </div>
+            )}
             {showModal ? (
                 <>
                     <div
@@ -46,7 +61,7 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
                                 <div
                                     className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">
-                                        Ajouter un article
+                                        Modifier l'article {post.title}
                                     </h3>
                                     <button
                                         className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -60,15 +75,17 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
                                 </div>
 
                                 {/*body*/}
-                                <form className="relative flex-auto" onSubmit={handleSubmit}>
+                                <form className="relative flex-auto text-sm font-normal" onSubmit={handleSubmit}>
                                     <div className="relative p-6 flex-auto w-full">
                                         <input required type={"text"} placeholder={"Titre de l'article"} id={"title"}
-                                               className={"w-full p-2 border bg-white text-black rounded mb-2"}/>
+                                               className={"w-full p-2 border bg-white text-black rounded mb-2"}
+                                               defaultValue={post?.title}/>
 
                                         <textarea required placeholder={"Contenu de l'article"} id={"text"}
+                                                  defaultValue={post?.content}
                                                   className={"w-full h-40 p-2 border bg-white text-black rounded mb-2"}/>
 
-                                        <input required type={"file"} id={"image"}
+                                        <input type={"file"} id={"image"}
                                                className={"w-full p-2 border bg-white text-black rounded mb-2 "}/>
                                     </div>
 
@@ -100,4 +117,4 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
     );
 }
 
-export default ModalAddComment;
+export default ModalEditPost;
