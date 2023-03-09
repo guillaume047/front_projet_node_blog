@@ -30,7 +30,7 @@ const LoginForm = () => {
             })
             .catch((err) => {
                 console.log('err : ', err)
-                flashMessage.show(`${err.response.data.message}`, "red");
+                flashMessage.show(`${err}`, "red");
             })
     }
 

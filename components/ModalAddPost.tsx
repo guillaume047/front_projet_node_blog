@@ -1,7 +1,8 @@
 import React, {FunctionComponent} from "react";
 import {IPost} from "@/interfaces/IPost";
-import {addPost} from "@/api/posts";
+import {addPost, upload} from "@/api/posts";
 import {useRouter} from "next/router";
+import {useFlashMessage} from "@/components/useFlashMessage";
 
 interface IProps {
 }
@@ -9,6 +10,7 @@ interface IProps {
 const ModalAddComment: FunctionComponent<IProps> = ({}) => {
     const [showModal, setShowModal] = React.useState(false);
     const router = useRouter();
+    const flashMessage = useFlashMessage();
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
@@ -16,13 +18,18 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
         const data: IPost = {
             title: e.target.title.value,
             content: e.target.text.value,
-            image: e.target.image.value,
-            likeCount: 0,
         }
 
-        addPost(data).then(() => {
-            setShowModal(false)
-            router.reload()
+        addPost(data).then((res: any) => {
+            upload(
+                res.data.post_id as string,
+                e.target.file.files[0],
+            ).then(() => {
+                setShowModal(false)
+                router.reload()
+            })
+        }).catch((err) => {
+            flashMessage.show(`${err}`, "red");
         })
     }
 
@@ -68,7 +75,7 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
                                         <textarea required placeholder={"Contenu de l'article"} id={"text"}
                                                   className={"w-full h-40 p-2 border bg-white text-black rounded mb-2"}/>
 
-                                        <input required type={"file"} id={"image"}
+                                        <input required type={"file"} id={"file"}
                                                className={"w-full p-2 border bg-white text-black rounded mb-2 "}/>
                                     </div>
 

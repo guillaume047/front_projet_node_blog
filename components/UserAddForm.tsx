@@ -33,7 +33,7 @@ const UserAddForm: FunctionComponent<IProps> = ({user}) => {
                 if (res.status === 200) {
                     flashMessage.show('Formulaire soumis avec succès!', "#33FF99");
                 } else {
-                    flashMessage.show(`${res.response.data.message}`, "#F08080");
+                    flashMessage.show(`${res}`, "#F08080");
                 }
             })
         } catch (err) {

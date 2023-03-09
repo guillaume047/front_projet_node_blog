@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from "react";
 import {IPost} from "@/interfaces/IPost";
-import {updatePost} from "@/api/posts";
+import {updatePost, upload} from "@/api/posts";
 import {useRecoilValue} from "recoil";
 import {authUser} from "@/recoil/user";
 import {useRouter} from "next/router";
@@ -21,12 +21,16 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
             _id: post._id,
             title: e.target.title.value,
             content: e.target.text.value,
-            image: e.target.image.value,
         }
 
-        updatePost(data).then(() => {
-            setShowModal(false)
-            router.reload()
+        updatePost(data).then((res) => {
+            upload(
+                post._id as string,
+                e.target.file.files[0],
+            ).then(() => {
+                setShowModal(false)
+                router.reload()
+            })
         })
     }
 
@@ -85,7 +89,8 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
                                                   defaultValue={post?.content}
                                                   className={"w-full h-40 p-2 border bg-white text-black rounded mb-2"}/>
 
-                                        <input type={"file"} id={"image"}
+                                        <label htmlFor={"image"} className={"text-sm font-bold"}>Changer l'image</label>
+                                        <input type={"file"} id={"file"}
                                                className={"w-full p-2 border bg-white text-black rounded mb-2 "}/>
                                     </div>
 

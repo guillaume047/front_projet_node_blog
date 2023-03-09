@@ -12,9 +12,35 @@ export function addPost(data: IPost) {
             }
         }
     ).then((res) => res.data)
-        .catch((err) =>
-            console.log('err', err)
-        )
+}
+
+export function like(post_id: string) {
+    return axios.post(
+        process.env.NEXT_PUBLIC_API_URL + '/like-post/' + post_id,
+        [],
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res.data)
+}
+
+export function upload(post_id: string, file: any) {
+    return axios.post(
+        process.env.NEXT_PUBLIC_API_URL + '/upload',
+        {
+            postId: post_id,
+            file: file
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "multipart/form-data",
+            }
+        }
+    ).then((res) => res.data)
 }
 
 export function updatePost(data: IPost) {
@@ -28,9 +54,6 @@ export function updatePost(data: IPost) {
             }
         }
     ).then((res) => res.data)
-        .catch((err) =>
-            console.log('err', err)
-        )
 }
 
 export function getSixPosts() {
@@ -42,10 +65,7 @@ export function getSixPosts() {
                 "Content-Type": "application/json",
             }
         }
-    ).then((res) => res.data)
-        .catch((err) =>
-            console.log('err', err)
-        )
+    ).then((res) => res.data.posts)
 }
 
 export function deleteOnePost(postID: string) {
@@ -58,7 +78,4 @@ export function deleteOnePost(postID: string) {
             }
         }
     ).then((res) => res.data)
-        .catch((err) =>
-            console.log('err', err)
-        )
 }
