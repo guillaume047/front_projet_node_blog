@@ -10,5 +10,5 @@ export interface IPost {
     owner_id?: string;
     created_at?: string;
     comments?: IComment[];
-    tags: ITag[] | string[];
+    tags: ITag[];
 }

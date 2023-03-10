@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {IPost} from "@/interfaces/IPost";
 import BaseLayout from "@/components/BaseLayout";
 import PostCard from "@/components/PostCard";
@@ -6,21 +6,24 @@ import {useQuery} from "react-query";
 import {gatAllTags, getFavorites} from "@/api/posts";
 
 const Posts = () => {
-    const [posts, setPosts] = useState([]);
+    // const [posts, setPosts] = useState<IPost[]>([]);
     const [nameSearched, setNameSearched] = useState<string>("");
     const [categoryActive, setCategoryActive] = useState<string>("all");
     let {data: tags} = useQuery(
         ['gatAllTags'],
         () => gatAllTags(),
     )
-    let {data: favorites} = useQuery(
+    let {data: posts, isLoading} = useQuery(
         ['getFavorites'],
         () => getFavorites(),
     )
 
-    useEffect(() => {
-        setPosts(favorites)
-    }, [favorites])
+    // useEffect(() => {
+    //     setPosts(favorites)
+    // }, [favorites])
+
+    if (isLoading) return <div>Loading...</div>
+    console.log('posts', posts)
 
     return (
         <BaseLayout title={"Users"}>
@@ -52,7 +55,6 @@ const Posts = () => {
                         <div className="grid base:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full mt-5 gap-5 lg:px-20">
                             {
                                 posts && posts.map((post: IPost) => {
-                                    // @ts-ignore
                                     if (categoryActive === "all" || post.tags?.map((tag) => tag._id).includes(categoryActive))
                                         if (nameSearched === "" || post.title.toLowerCase().includes(nameSearched.toLowerCase()))
                                             return <PostCard key={post._id}
