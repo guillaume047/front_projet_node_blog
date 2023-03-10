@@ -25,6 +25,13 @@ const Menu = () => {
                                     Tous les articles
                                 </a>
                             </div>
+
+                            <div className="flex flex-end items-center space-x-1">
+                                <a href="/favorites"
+                                   className="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300">
+                                    Favoris
+                                </a>
+                            </div>
                         </div>
 
                         {user && user.isAdmin === true && (

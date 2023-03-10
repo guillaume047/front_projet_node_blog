@@ -1,4 +1,5 @@
 import {IComment} from "@/interfaces/IComment";
+import {ITag} from "@/interfaces/ITag";
 
 export interface IPost {
     _id?: string;
@@ -8,6 +9,6 @@ export interface IPost {
     like: string[];
     owner_id?: string;
     created_at?: string;
-    categories: string[];
     comments?: IComment[];
+    tags?: ITag[] | string[];
 }

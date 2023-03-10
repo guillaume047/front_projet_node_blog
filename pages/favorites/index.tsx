@@ -2,9 +2,8 @@ import {useEffect, useState} from "react";
 import {IPost} from "@/interfaces/IPost";
 import BaseLayout from "@/components/BaseLayout";
 import PostCard from "@/components/PostCard";
-import ModalAddPost from "@/components/ModalAddPost";
 import {useQuery} from "react-query";
-import {gatAllTags, getAllPosts} from "@/api/posts";
+import {gatAllTags, getFavorites} from "@/api/posts";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -14,20 +13,19 @@ const Posts = () => {
         ['gatAllTags'],
         () => gatAllTags(),
     )
-    let {data: allPosts} = useQuery(
-        ['getAllPosts'],
-        () => getAllPosts(),
+    let {data: favorites} = useQuery(
+        ['getFavorites'],
+        () => getFavorites(),
     )
 
     useEffect(() => {
-        setPosts(allPosts)
-    }, [allPosts])
-
+        setPosts(favorites)
+    }, [favorites])
 
     return (
         <BaseLayout title={"Users"}>
             <div className="flex flex-col text-black items-center px-6 py-8 mx-auto w-full md:h-full lg:py-0">
-                <h1 className="text-3xl font-medium">Articles</h1>
+                <h1 className="text-3xl font-medium">Favoris</h1>
                 <div className="flex items-center px-4 py-3 bg-white border-b border-gray-200 rounded">
                     <input
                         className="flex-1 px-4 py-2 mr-4 rounded-lg border border-gray-400 bg-white"
@@ -48,8 +46,6 @@ const Posts = () => {
                         })}
                     </select>
                 </div>
-
-                <ModalAddPost/>
 
                 <div className="flex flex-col items-center w-full">
                     <div className="flex flex-wrap justify-center w-full">

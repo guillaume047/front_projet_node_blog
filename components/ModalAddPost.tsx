@@ -1,8 +1,12 @@
-import React, {FunctionComponent} from "react";
+import React, {FunctionComponent, useState} from "react";
 import {IPost} from "@/interfaces/IPost";
-import {addPost, upload} from "@/api/posts";
+import {addPost, gatAllTags, upload} from "@/api/posts";
 import {useRouter} from "next/router";
 import {useFlashMessage} from "@/components/useFlashMessage";
+import {useQuery} from "react-query";
+import Select from "react-select";
+import {ISelectOption} from "@/interfaces/ISelectOption";
+import {ITag} from "@/interfaces/ITag";
 
 interface IProps {
 }
@@ -11,13 +15,17 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
     const [showModal, setShowModal] = React.useState(false);
     const router = useRouter();
     const flashMessage = useFlashMessage();
-
+    let {data, isLoading, refetch} = useQuery(
+        ['gatAllTags'],
+        () => gatAllTags(),
+    )
     const handleSubmit = (e: any) => {
         e.preventDefault()
 
         const data: IPost = {
             title: e.target.title.value,
             content: e.target.text.value,
+            tags: selectedTags.map((tag: ISelectOption) => tag.value)
         }
 
         addPost(data).then((res: any) => {
@@ -31,6 +39,17 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
         }).catch((err) => {
             flashMessage.show(`${err}`, "red");
         })
+    }
+
+    const [selectedTags, setSelectedTags] = useState([]);
+    const handleTagChange = async (selected: any, selectaction: any) => {
+        const {action} = selectaction;
+        if (action === "clear") {
+        } else if (action === "select-option") {
+        } else if (action === "remove-value") {
+            console.log("remove");
+        }
+        setSelectedTags(selected);
     }
 
     return (
@@ -77,6 +96,25 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
 
                                         <input required type={"file"} id={"file"}
                                                className={"w-full p-2 border bg-white text-black rounded mb-2 "}/>
+
+                                        <div className="flex justify-center">
+                                            <div className="mb-3 xl:w-96 mx-10 w-full">
+                                                <Select
+                                                    id="tags"
+                                                    instanceId="tags"
+                                                    isMulti
+                                                    name="tags"
+                                                    className="basic-multi-select"
+                                                    classNamePrefix="select"
+                                                    options={data.map((tag: ITag) => ({
+                                                        value: tag._id,
+                                                        label: tag.name
+                                                    }))}
+                                                    onChange={handleTagChange}
+                                                    placeholder="Choissisez un ou plusieurs tags"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/*footer*/}

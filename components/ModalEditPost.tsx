@@ -37,7 +37,7 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
     return (
         <>
             {(user && user.isAdmin === true || user._id === post.owner_id) && (
-                <div className={"absolute top-0 right-6"} onClick={() => setShowModal(true)}>
+                <div className={"absolute top-0 right-12"} onClick={() => setShowModal(true)}>
                     <svg viewBox="0 0 100 100"
                          className={"fill-blue-600 hover:fill-blue-400 hover:cursor-pointer h-5 w-5"}>
                         <path

@@ -8,7 +8,6 @@ export function getRandomUser() {
             "Content-Type": "application/json",
         }
     }).then(res => res.data)
-        .catch(err => console.log(err));
 }
 
 export function addOneUser(user: IUser) {
@@ -22,8 +21,33 @@ export function addOneUser(user: IUser) {
             }
         }
     ).then((res) => res)
-        .catch(err => console.log(err));
 
+}
+
+export function addFavorite(post_id: string) {
+    return axios.post(
+        process.env.NEXT_PUBLIC_API_URL + '/add-favorite/' + post_id,
+        [],
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res)
+}
+
+export function deleteFavorite(post_id: string) {
+    return axios.post(
+        process.env.NEXT_PUBLIC_API_URL + '/delete-favorite/' + post_id,
+        [],
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res)
 }
 
 export function updateOneUser(user: IUser) {

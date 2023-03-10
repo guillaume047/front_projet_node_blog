@@ -9,15 +9,16 @@ import {useRouter} from "next/router";
 import {useFlashMessage} from "@/components/useFlashMessage";
 import ModalEditPost from "@/components/ModalEditPost";
 import * as process from "process";
+import FavoriteIcon from "@/components/FavoriteIcon";
 
 interface IProps {
     initialPost: IPost
 }
 
 const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
+    const user = useRecoilValue(authUser);
     const [post, setPost] = useState<IPost>(initialPost)
-    const [isLiked, setIsLiked] = useState<boolean>(false)
-    const user = useRecoilValue(authUser)
+    const [isLiked, setIsLiked] = useState<boolean>(initialPost?.like?.includes(user._id))
     const router = useRouter()
     const flashMessage = useFlashMessage();
 
@@ -42,14 +43,17 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
         })
     }
 
+    if (!post) return null
+
     return (
         <div
             className="flex flex-col justify-start bg-amber-200 p-5 gap-3 w-full h-70 rounded-2xl border-2 border-blue-200 hover:border-blue-400">
             <div className="flex flex-row text-2xl font-bold relative">
                 {post.title}
 
+                <FavoriteIcon post={post}/>
                 {user && user.isAdmin === true && (
-                    <div className={"absolute top-0 right-0"} onClick={() => deletePost(post._id as string)}>
+                    <div className={"absolute top-0 right-6"} onClick={() => deletePost(post._id as string)}>
                         <svg viewBox="0 0 612 612"
                              className={"fill-red-500 hover:fill-red-700 hover:cursor-pointer h-5 w-5"}>
                             <g>
@@ -71,6 +75,12 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
                 )}
 
                 <ModalEditPost post={post}/>
+            </div>
+
+            <div className="flex flex-row gap-1">
+                {post.tags && post.tags.map((tag, index) => (
+                    <div key={index} className={"text-xs px-2 py-1 bg-cyan-500 rounded"}>{tag.name}</div>
+                ))}
             </div>
 
             {post.image && (

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {IPost} from "@/interfaces/IPost";
+import process from "process";
 
 export function addPost(data: IPost) {
     return axios.post(
@@ -12,6 +13,26 @@ export function addPost(data: IPost) {
             }
         }
     ).then((res) => res.data)
+}
+
+export function getFavorites() {
+    return axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/Favorites', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        }).then((res) => res.data)
+}
+
+export function getAllPosts() {
+    return axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/posts', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
+            }
+        }).then((res) => res.data)
 }
 
 export function like(post_id: string) {
@@ -65,7 +86,20 @@ export function getSixPosts() {
                 "Content-Type": "application/json",
             }
         }
-    ).then((res) => res.data.posts)
+    ).then((res) => res.data)
+}
+
+export function gatAllTags() {
+    return axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/tag/all',
+        {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+                "Content-Type": "application/json",
+            }
+        }
+    ).then((res) => res.data)
+        .catch((err) => console.log(err))
 }
 
 export function deleteOnePost(postID: string) {
