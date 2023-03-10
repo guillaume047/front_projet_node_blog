@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useState} from "react";
-import {IPost} from "@/interfaces/IPost";
 import {addPost, gatAllTags, upload} from "@/api/posts";
 import {useRouter} from "next/router";
 import {useFlashMessage} from "@/components/useFlashMessage";
@@ -15,6 +14,7 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
     const [showModal, setShowModal] = React.useState(false);
     const router = useRouter();
     const flashMessage = useFlashMessage();
+    const [selectedTags, setSelectedTags] = useState([]);
     let {data, isLoading, refetch} = useQuery(
         ['gatAllTags'],
         () => gatAllTags(),
@@ -22,7 +22,7 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
     const handleSubmit = (e: any) => {
         e.preventDefault()
 
-        const data: IPost = {
+        const data: any = {
             title: e.target.title.value,
             content: e.target.text.value,
             tags: selectedTags.map((tag: ISelectOption) => tag.value)
@@ -41,7 +41,6 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
         })
     }
 
-    const [selectedTags, setSelectedTags] = useState([]);
     const handleTagChange = async (selected: any, selectaction: any) => {
         const {action} = selectaction;
         if (action === "clear") {
@@ -108,7 +107,7 @@ const ModalAddComment: FunctionComponent<IProps> = ({}) => {
                                                     classNamePrefix="select"
                                                     options={data.map((tag: ITag) => ({
                                                         value: tag._id,
-                                                        label: tag.name
+                                                        label: tag.name,
                                                     }))}
                                                     onChange={handleTagChange}
                                                     placeholder="Choissisez un ou plusieurs tags"

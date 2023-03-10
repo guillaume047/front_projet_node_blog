@@ -87,6 +87,7 @@ const LoginForm = () => {
                             </button>
 
                             {flashMessage.isVisible && (
+                                // @ts-ignore
                                 <div style={flashMessage.isVisible ? {
                                     ...styles.flashMessage,
                                     backgroundColor: flashMessage.color

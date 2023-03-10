@@ -79,6 +79,7 @@ const PostCard: FunctionComponent<IProps> = ({initialPost}) => {
 
             <div className="flex flex-row gap-1">
                 {post.tags && post.tags.map((tag, index) => (
+                    // @ts-ignore
                     <div key={index} className={"text-xs px-2 py-1 bg-cyan-500 rounded"}>{tag.name}</div>
                 ))}
             </div>

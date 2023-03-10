@@ -1,9 +1,13 @@
-import React, {FunctionComponent} from "react";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import {IPost} from "@/interfaces/IPost";
-import {updatePost, upload} from "@/api/posts";
+import {gatAllTags, updatePost, upload} from "@/api/posts";
 import {useRecoilValue} from "recoil";
 import {authUser} from "@/recoil/user";
 import {useRouter} from "next/router";
+import {ISelectOption} from "@/interfaces/ISelectOption";
+import Select from "react-select";
+import {ITag} from "@/interfaces/ITag";
+import {useQuery} from "react-query";
 
 interface IProps {
     post: IPost
@@ -13,14 +17,26 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
     const [showModal, setShowModal] = React.useState(false);
     const user = useRecoilValue(authUser)
     const router = useRouter()
+    const [selectedTags, setSelectedTags] = useState<ISelectOption[]>([]);
+    let {data, isLoading, refetch} = useQuery(
+        ['gatAllTags'],
+        () => gatAllTags(),
+    )
+
+    useEffect(() => {
+        setSelectedTags(post.tags.map((tag: any) => {
+            return {value: tag._id, label: tag.name}
+        }))
+    }, [])
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
 
-        const data: IPost = {
+        const data: any = {
             _id: post._id,
             title: e.target.title.value,
             content: e.target.text.value,
+            tags: selectedTags.map((tag: ISelectOption) => tag.value)
         }
 
         updatePost(data).then((res) => {
@@ -32,6 +48,16 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
                 router.reload()
             })
         })
+    }
+
+    const handleTagChange = async (selected: any, selectaction: any) => {
+        const {action} = selectaction;
+        if (action === "clear") {
+        } else if (action === "select-option") {
+        } else if (action === "remove-value") {
+            console.log("remove");
+        }
+        setSelectedTags(selected);
     }
 
     return (
@@ -65,7 +91,7 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
                                 <div
                                     className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">
-                                        Modifier l'article {post.title}
+                                        Modifier l&apos;article {post.title}
                                     </h3>
                                     <button
                                         className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -89,9 +115,30 @@ const ModalEditPost: FunctionComponent<IProps> = ({post}) => {
                                                   defaultValue={post?.content}
                                                   className={"w-full h-40 p-2 border bg-white text-black rounded mb-2"}/>
 
-                                        <label htmlFor={"image"} className={"text-sm font-bold"}>Changer l'image</label>
+                                        <label htmlFor={"image"} className={"text-sm font-bold"}>Changer
+                                            l&apos;image</label>
                                         <input type={"file"} id={"file"}
                                                className={"w-full p-2 border bg-white text-black rounded mb-2 "}/>
+
+                                        <div className="flex justify-center">
+                                            <div className="mb-3 xl:w-96 mx-10 w-full">
+                                                <Select
+                                                    id="tags"
+                                                    instanceId="tags"
+                                                    isMulti
+                                                    name="tags"
+                                                    className="basic-multi-select"
+                                                    classNamePrefix="select"
+                                                    options={data.map((tag: ITag) => ({
+                                                        value: tag._id,
+                                                        label: tag.name,
+                                                    }))}
+                                                    defaultValue={selectedTags}
+                                                    onChange={handleTagChange}
+                                                    placeholder="Choissisez un ou plusieurs tags"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/*footer*/}
